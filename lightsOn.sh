@@ -8,7 +8,7 @@
 # Description: Bash script that prevents the screensaver and display power
 # management (DPMS) to be activated when you are watching Flash Videos
 # fullscreen on Firefox and Chromium.
-# Can detect mplayer, minitube, and VLC when they are fullscreen too.
+# Can detect mplayer, minitube, VLC and Totem when they are fullscreen too.
 # Also, screensaver can be prevented when certain specified programs are running.
 # lightsOn.sh needs xscreensaver or kscreensaver to work.
 
@@ -29,10 +29,11 @@
 
 
 # Modify these variables if you want this script to detect if Mplayer,
-# VLC, Minitube, or Firefox or Chromium Flash Video are Fullscreen and disable
+# VLC, Minitube, Totem or Firefox or Chromium Flash Video are Fullscreen and disable
 # xscreensaver/kscreensaver and PowerManagement.
 mplayer_detection=1
 vlc_detection=1
+totem_detection=1
 firefox_flash_detection=1
 chromium_flash_detection=1
 minitube_detection=1
@@ -167,6 +168,18 @@ isAppRunning()
             #vlc_process=`pgrep -l vlc | grep -wc vlc`
             vlc_process=`pgrep -lc vlc`
             if [ $vlc_process -ge 1 ]; then
+                return 1
+            fi
+        fi
+    fi
+
+
+    # Check if user want to detect totem fullscreen, modify variable totem_detection
+    if [ $totem_detection == 1 ];then
+        if [[ "$activ_win_title" = *totem* ]];then
+            #check if totem is running.
+            totem_process=`pgrep -lc totem`
+            if [ $totem_process -ge 1 ]; then
                 return 1
             fi
         fi
